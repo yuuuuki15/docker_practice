@@ -1,0 +1,23 @@
+version: '3'
+
+service:
+  nginx:
+    container_name: nginx
+    build: nginx
+    ports:
+      - 443:443
+    restart: always
+    networks:
+      - custom_network
+
+  wordpress:
+    container_name: wordpress
+    build: wordpress
+    restart: always
+    env_file:
+      - .env
+    networks:
+      - custom_network
+
+networls:
+  custom_network:
