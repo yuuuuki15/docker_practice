@@ -1,6 +1,6 @@
 version: '3'
 
-service:
+services:
   nginx:
     container_name: nginx
     build: nginx
@@ -19,5 +19,5 @@ service:
     networks:
       - custom_network
 
-networls:
+networks:
   custom_network:
