@@ -18,4 +18,4 @@ rm -rf wordpress
 
 # mv /wp-config.php .
 
-/usr/sbin/php-fpm7.3 -F
+/usr/sbin/php-fpm7.3 -R -F
