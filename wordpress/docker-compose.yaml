@@ -14,6 +14,8 @@ services:
     container_name: wordpress
     build: wordpress
     restart: always
+    depends_on:
+      - mariadb
     env_file:
       - .env
     volumes:
@@ -21,8 +23,19 @@ services:
     networks:
       - custom_network
 
+  mariadb:
+    container_name: mariadb
+    build: mariadb
+    restart: always
+    networks:
+      - custom_network
+    env_file:
+      - .env
+    volumes:
+      - mariadb_data:/var/lib/mysql
 networks:
   custom_network:
 
 volumes:
   wordpress_data:
+  mariadb_data:
