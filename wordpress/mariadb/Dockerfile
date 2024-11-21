@@ -8,6 +8,8 @@ EXPOSE 3306
 
 COPY ./script.sh /script.sh
 
+COPY ./conf/wordpress.sql /wordpress.sql
+
 RUN chmod +x /script.sh
 
 ENTRYPOINT ["/script.sh"]
