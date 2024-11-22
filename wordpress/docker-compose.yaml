@@ -22,6 +22,8 @@ services:
     ports:
       - 443:443
     restart: always
+    depends_on:
+      - wordpress
     volumes:
       - wordpress_data:/var/www/html
     networks:
