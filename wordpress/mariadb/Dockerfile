@@ -1,4 +1,4 @@
-FROM mariadb:10.5
+FROM debian:10
 
 RUN apt-get update && apt-get install -y mariadb-server mariadb-client vim
 
@@ -10,6 +10,9 @@ COPY ./script.sh /script.sh
 
 COPY ./conf/wordpress.sql /wordpress.sql
 
+COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
+
 RUN chmod +x /script.sh
 
 ENTRYPOINT ["/script.sh"]
+# ENTRYPOINT ["tail", "-f"]
