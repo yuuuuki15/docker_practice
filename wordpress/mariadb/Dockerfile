@@ -1,4 +1,4 @@
-FROM debian:10
+FROM debian:11
 
 RUN apt-get update && apt-get install -y mariadb-server mariadb-client vim
 
@@ -15,4 +15,3 @@ COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
 RUN chmod +x /script.sh
 
 ENTRYPOINT ["/script.sh"]
-# ENTRYPOINT ["tail", "-f"]

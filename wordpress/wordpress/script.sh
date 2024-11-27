@@ -1,31 +1,44 @@
 #!/bin/bash
 
-mkdir -p /var/www/html
+cleanup() {
+    echo "Shutdown signal received. Shutting down WordPress..."
+    exit 0
+}
+trap cleanup SIGTERM SIGINT
 
-cd /var/www/html
+if [ -f /var/www/html/wp-config.php ]; then
+    echo "WordPress is already installed. Skipping installation."
+else
+    mkdir -p /var/www/html
 
-rm -rf *
+    cd /var/www/html
 
-curl -O https://wordpress.org/latest.tar.gz
+    rm -rf *
 
-tar -xvf latest.tar.gz
+    curl -o wordpress.tar.gz https://wordpress.org/wordpress-6.7.1.tar.gz
 
-rm -rf latest.tar.gz
+    # tar -xvf wordpress.tar.gz
+    tar -xvf wordpress.tar.gz --strip-components=1 -C .
 
-mv wordpress/* .
+    rm -rf wordpress.tar.gz
 
-rm -rf wordpress
+    # mv wordpress/* .
 
-# mv /wp-config.php .
+    # rm -rf wordpress
 
-echo "Wordpress installed"
+    echo "Wordpress installed"
 
-cp wp-config-sample.php wp-config.php
-sed -i "s/database_name_here/$MYSQL_DATABASE/g" wp-config.php
-sed -i "s/username_here/$MYSQL_USER/g" wp-config.php
-sed -i "s/password_here/$MYSQL_PASSWORD/g" wp-config.php
-sed -i "s/localhost/mariadb/g" wp-config.php
+    cp wp-config-sample.php wp-config.php
+    sed -i "s/database_name_here/$MYSQL_DATABASE/g" wp-config.php
+    sed -i "s/username_here/$MYSQL_USER/g" wp-config.php
+    sed -i "s/password_here/$MYSQL_PASSWORD/g" wp-config.php
+    sed -i "s/localhost/mariadb/g" wp-config.php
 
-echo "Wordpress configured"
+    echo "Wordpress configured"
 
-/usr/sbin/php-fpm7.3 -R -F
+fi
+
+/usr/sbin/php-fpm7.4 -R -F &
+PHP_PID=$!
+
+wait $PHP_PID
